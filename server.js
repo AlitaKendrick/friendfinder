@@ -1,47 +1,30 @@
+// Dependencies
 var express = require("express");
 var bodyParser = require("body-parser");
 var path = require("path");
-var fs = require("fs");
 
+// Sets up the Express App
 var app = express();
-var port = 4200;
+var PORT = process.env.PORT || 3000;
 
-var friends = [];
-
+// Sets up the Express app to handle data parsing
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
-app.use(bodyParser.json({type: "application/vdn.api+json"}));
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-
-app.listen(port, function(){
-	console.log("listening on port " + port);
-}); 
-
-
-app.get("/", function(request, response) {
-  response.sendFile(path.join(__dirname, "/app/public/home.html"));
+// Starts the server to begin listening
+app.listen(PORT, function() {
+  console.log("App listening on PORT " + PORT);
 });
 
-app.get("/survey", function(request, response) {
-  response.sendFile(path.join(__dirname, "/app/public/survey.html"));
-});
+// Requires and sets the HTML routes in this file
+require('./app/routing/htmlRoutes.js')(app);
 
-// app.get("/api/friends", function(request, response) {
-//   console.log("hello");
-// });
+// Requires and sets the API routes in this file
+require('./app/routing/apiRoutes.js')(app);
 
-app.get("/api/friends", function(request, response) {
-	return response.json(friends);
-});
 
-app.post("/api/friends", function(request, response){
-	var newfriend = request.body;
-	// console.log(newReservation);
-	friends.push(newfriend);
 
-     fs.writeFile('/app/data/friends.js', newfriend, 'utf8', 'callback');
 
-	console.log(friends);
-});
 
