@@ -13,16 +13,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-// Starts the server to begin listening
-app.listen(PORT, function() {
-  console.log("App listening on PORT " + PORT);
-});
-
 // Requires and sets the HTML routes in this file
 require('./app/routing/htmlRoutes.js')(app);
 
 // Requires and sets the API routes in this file
 require('./app/routing/apiRoutes.js')(app);
+
+
+// Starts the server to begin listening
+app.listen(PORT, function() {
+  console.log("App listening on PORT " + PORT);
+});
+
+
 
 
 
